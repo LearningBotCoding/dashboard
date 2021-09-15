@@ -40,7 +40,7 @@
 	<div class="container">
 		<h3>Guilds</h3>
 		<% user.guilds.forEach(g => { %>
-		<% const perms = new permissions(g.permissions_new).has("ADMINISTRATOR") %>
+		<% const perms = new permissions(g.permissions_new).has("MANAGE_GUILD") %>
 		<% if(perms) { %>
 		<div class="container row">
 	<div class="col-sm-6">
@@ -57,7 +57,7 @@
         <% if(bot.guilds.cache.get(g.id)) { %>
 		<a href=<%= path %> class="btn btn-success">Manage Server</a>
 		<% } else { %>
-		<% const invitelink = `https://discord.com/api/oauth2/authorize?client_id=883608595835523072&permissions=0&redirect_uri=https%3A%2F%2Fdashboard.aditya1010.repl.co%2Fcallback&scope=bot%20applications.commands&&guild_id=${g.id}` %>
+		<% const invitelink = `https://discord.com/api/oauth2/authorize?client_id=883608595835523072&permissions=0&redirect_uri=https%3A%2F%2Fdashboard.aditya1010.repl.co%2Finfo&scope=bot%20applications.commands&&guild_id=${g.id}` %>
 		<a href=<%= invitelink %> class="btn btn-primary">Invite me</a>
 		<% } %>
       </div>
