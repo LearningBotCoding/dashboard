@@ -27,7 +27,7 @@ var scopes = ['identify', 'email', /* 'connections', (it is currently broken) */
 var prompt = 'consent'
 
 passport.use(new Strategy({
-    clientID: process.env.clientid,
+    clientID: process.env.id,
     clientSecret: process.env.secret,
     callbackURL: process.env.cburl,
     scope: scopes,
@@ -53,6 +53,10 @@ app.get('/', passport.authenticate('discord', { scope: scopes, prompt: prompt })
 app.get('/callback',
     passport.authenticate('discord', { failureRedirect: '/' }), function(req, res) { res.redirect('/info') } // auth success
 );
+app.get("/logout", (req, res) => {
+	req.logout();
+	res.redirect("/")
+});
 app.get("/info", checkAuth, (req, res) => {
 	res.render('index', {
 		req: req,
@@ -70,7 +74,8 @@ app.get("/guilds/:guildId", checkAuth, async(req, res) => {
 	let prefix = await db.get(`prefix_${id}`);
 	let modlogchannel = await db.get(`modlog_${id}`);
 	if(!prefix) prefix="!";
-	if(!modlogchannel) modlogchannel="No modlog channel"
+	if(!modlogchannel) modlogchannel="No modlog channel";
+	console.log(guild.members.permissions);
 	res.render('guild', {
 		req: req,
 		db: db,
@@ -78,6 +83,7 @@ app.get("/guilds/:guildId", checkAuth, async(req, res) => {
 		prefix: prefix,
 		bot: client,
 		guild: guild,
+		// member: member || null, 
 		user: req.user,
 		permissions: Discord.Permissions,
 	})
