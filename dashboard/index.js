@@ -27,9 +27,9 @@ var scopes = ['identify', 'email', /* 'connections', (it is currently broken) */
 var prompt = 'consent'
 
 passport.use(new Strategy({
-    clientID: '883608595835523072',
-    clientSecret: 'VMMx0GIIFUb5LOu3TxHdkKRmK8UFO5tW',
-    callbackURL: 'https://dashboard.aditya1010.repl.co/callback',
+    clientID: process.env.clientid,
+    clientSecret: process.env.secret,
+    callbackURL: process.env.cburl,
     scope: scopes,
     prompt: prompt
 }, function(accessToken, refreshToken, profile, done) {
