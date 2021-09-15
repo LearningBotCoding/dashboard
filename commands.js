@@ -7,8 +7,9 @@ const db = require('quick.db')
 
 module.exports = (message) => {
 	if(message.author.bot) return;
-	let bprefix = db.get(`prefix_${message.author.id}`);
+	let bprefix = db.get(`prefix_${message.guild.id}`);
 	if(!bprefix) bprefix = "!"
+	if(!message.content.startsWith(bprefix)) return;
 	  const args = message.content.slice(bprefix.length).trim().split(/ +/g);
   	  const command = args.shift().toLowerCase();
 		if(command === "sp") {
