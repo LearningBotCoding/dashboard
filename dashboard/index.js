@@ -4,16 +4,20 @@ var express = require("express"),
   passport = require("passport"),
   Strategy = require("passport-discord").Strategy,
   Discord = require("discord.js"),
-  enmap = require("enmap"),
+  db = require("quick.db"),
   config = require("../dashboard.config.json"),
-  app = express(),
-  db = new enmap({ dataDir: "./database" });
+  bodyparser = require('body-parser'),
+  app = express();
 /*
  * @param {Client} client
  */
 
 module.exports = (client) => {
   app.set("view engine", "ejs");
+
+  app.use(bodyparser.json())
+
+  app.use(bodyparser.urlencoded({ extended: true }));
 
   passport.serializeUser(function (user, done) {
     done(null, user);
@@ -33,7 +37,7 @@ module.exports = (client) => {
   passport.use(
     new Strategy(
       {
-        clientID: process.env.clientId,
+        clientID: process.env.clientID,
         clientSecret: process.env.clientSecret,
         callbackURL: process.env.callbackURL,
         scope: scopes,
@@ -73,6 +77,14 @@ module.exports = (client) => {
     req.logout();
     res.redirect("/");
   });
+  app.post("/api/prefixes/:guildId", checkAuth, (req, res) => {
+	  const id = req.params.guildId;
+	  const prefix = req.body.prefix;
+
+	  db.set(`prefix_${id}`, prefix);
+	  res.redirect(`/guilds/${id}`);
+  });
+
   app.get("/info", checkAuth, (req, res) => {
     res.render("index", {
       req: req,
