@@ -90,6 +90,9 @@
         >
           User
         </button>
+		<% const g = req.user.guilds.find(g => g.id === guild.id)%>
+		<% const perms = new permissions(g.permissions_new).has("ADMINISTRATOR") %>
+		<% if(perms) { %>
         <button
           class="nav-link"
           id="v-pills-settings-tab"
@@ -102,6 +105,7 @@
         >
           Settings
         </button>
+		<% } %>
       </div>
       <div class="container tab-content" id="v-pills-tabContent">
         <div
@@ -124,7 +128,7 @@
         >
           <h1>User Info</h1>
 			<h4>Username: <%= user.username %></h4>
-			<h4>Id: <% user.id %></h4>
+			<h4>Id: <% req.user.id %></h4>
         </div>
         <div
           class="tab-pane fade"
