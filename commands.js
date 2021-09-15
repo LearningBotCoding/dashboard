@@ -1,7 +1,4 @@
-const {Message} = require
-(
-	'discord.js'
-);
+const {Message} = require('discord.js');
 
 /*
 * @param {Message} message
