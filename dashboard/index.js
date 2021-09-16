@@ -2,6 +2,7 @@ const { Client } = require("discord.js");
 var express = require("express"),
   session = require("express-session"),
   passport = require("passport"),
+  morgan = require("morgan"),
   Strategy = require("passport-discord").Strategy,
   Discord = require("discord.js"),
   db = require("quick.db"),
@@ -19,6 +20,8 @@ module.exports = (client) => {
 
   app.use(bodyparser.urlencoded({ extended: true }));
 
+  app.use(morgan("dev"));
+	
   passport.serializeUser(function (user, done) {
     done(null, user);
   });
